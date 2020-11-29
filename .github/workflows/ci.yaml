@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        run: dotnet test --no-build --nologo --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
       - name: Move coverage report
         run: cp ./Calc.Tests/TestResults/*/coverage.*.xml ./
       - name: Upload coverage to Codecov
@@ -32,3 +32,5 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
+      - name: Publish Release
+        run: dotnet publish ./Calc/Calc.csproj --no-build --nologo -c Release -o ./release
