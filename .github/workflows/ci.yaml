@@ -22,4 +22,12 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --collect:"XPlat Code Coverage" --verbosity normal
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./Calc.Tests/TestResults/coverage.cobertura.xml
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true
